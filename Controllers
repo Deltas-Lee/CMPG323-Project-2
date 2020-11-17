@@ -40,8 +40,48 @@ namespace ORGANISATION_X.Controllers
     }
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-----------------------------------------------------------------------------
 RoleController
+----------------------------------------------------------------------------
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ORGANISATION_X.Controllers
+{
+    public class RoleController : Controller
+    {
+        readonly RoleManager<IdentityRole> roleManager;
+        public RoleController(RoleManager<IdentityRole> roleManager)
+        {
+            this.roleManager = roleManager;
+        }
+        [Authorize(Policy = "readonlypolicy")]
+        public IActionResult Index()
+        {
+            var role = roleManager.Roles.ToList();
+            return View(role);
+        }
+        //[Authorize(Policy = "readonlypolicy")]
+        public IActionResult Create()
+        {
+            return View(new IdentityRole());
+        }
+        [HttpPost]
+        //[Authorize(Policy = "readonlypolicy")]
+        public async Task<IActionResult> Create(IdentityRole role)
+        {
+            await roleManager.CreateAsync(role);
+            return RedirectToAction("Index");
+        }
+
+    }
+}
+
+
+
 -----------------------------------------------------------------------------
 Employees/ Cmpg323 dataset
 ----------------------------------------------------------------------------
