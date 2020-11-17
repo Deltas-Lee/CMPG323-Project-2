@@ -38,10 +38,6 @@ namespace ORGANISATION_X
             services.AddControllersWithViews();
             services.AddDbContext<OrganisationxDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRazorPages();
-
-            
-
-            //Authorization policies
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("readonlypolicy",
@@ -49,10 +45,6 @@ namespace ORGANISATION_X
                 options.AddPolicy("writepolicy",
                     builder => builder.RequireRole("Manager"));
             });
-
-
-
-            /*services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
