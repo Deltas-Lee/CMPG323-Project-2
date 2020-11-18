@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using ORGANISATION_X.Models;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace ORGANISATION_X
 {
     public class Startup
@@ -32,12 +33,16 @@ namespace ORGANISATION_X
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultUI()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
             services.AddDbContext<OrganisationxDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRazorPages();
+            //Authorization policies
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("readonlypolicy",
